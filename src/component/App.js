@@ -22,14 +22,14 @@ class App extends Component {
         })
         Service.getPlaces().then(data => {
 
-            const places = JSON.parse(data).sort(function(a, b){
-                if(a.verbose_name < b.verbose_name) return -1;
-                if(a.verbose_name > b.verbose_name) return 1;
+            const places = JSON.parse(data).sort((a, b) => {
+                if (a.verbose_name < b.verbose_name) return -1;
+                if (a.verbose_name > b.verbose_name) return 1;
                 return 0;
             })
 
             const arrTen = [];
-            for (var k = 0; k < places.length; k++) {
+            for (let k = 0; k < places.length; k++) {
                 arrTen.push(<option key={places[k].url} value={places[k].url}> {places[k].verbose_name.replace(/_/g, ' ')} </option>);
             }
             this.setState({
@@ -45,7 +45,7 @@ class App extends Component {
             loading: true
         })
         const k = event.target.value
-        let got = this.state.forecast.filter(data => data.key === k)
+        const got = this.state.forecast.filter(data => data.key === k)
         if (got.length > 0) {
             console.log(JSON.stringify(got[0]))
             console.log("\n\ncached data\n")
@@ -136,7 +136,7 @@ class App extends Component {
                                 </tbody>
                             </table>
                             <br />
-                            <button onClick ={this.showRawData}>show/hide Raw Data</button>
+                            <button onClick={this.showRawData}>show/hide Raw Data</button>
                         </div>
                     )
                 }
