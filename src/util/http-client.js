@@ -26,12 +26,12 @@ const get = (endpoint) => new Promise((resolve, reject) => {
             if (encoding === 'gzip') {
                 console.log("supports GZIP")
                 zlib.gunzip(buffer, (err, decoded) => {
-                    resolve(decoded.toString());
+                    err ? reject(err) : resolve(decoded.toString());
                 });
             } else if (encoding === 'deflate') {
                 console.log("supports DEFLATE")
                 zlib.inflate(buffer, (err, decoded) => {
-                    resolve(decoded.toString());
+                    err ? reject(err) : resolve(decoded.toString());
                 })
             } else {
                 console.log("no compression")
