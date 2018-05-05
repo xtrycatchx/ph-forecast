@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Service from '../logic/service';
+import MapForecast from './MapForecast'
+import { GoogleApiWrapper } from 'google-maps-react'
 
 class App extends Component {
 
@@ -12,7 +14,8 @@ class App extends Component {
             forecast: [],
             placeData: null,
             loading: false,
-            showRaw: false
+            showRaw: false,
+            currentLocation: null
         }
     }
 
@@ -30,7 +33,7 @@ class App extends Component {
 
             const arrTen = [];
             for (let k = 0; k < places.length; k++) {
-                arrTen.push(<option key={places[k].url} value={places[k].url}> {places[k].verbose_name.replace(/_/g, ' ')} </option>);
+                arrTen.push(<option key={places[k].url} value={JSON.stringify(places[k])}> {places[k].verbose_name.replace(/_/g, ' ')} </option>);
             }
             this.setState({
                 places: arrTen,
@@ -41,22 +44,29 @@ class App extends Component {
     }
 
     changedPlace(event) {
+
+        const k = JSON.parse(event.target.value)
+
         this.setState({
-            loading: true
+            loading: true,
+            currentLocation: k.verbose_name.replace(/_/g, ', ') + ', Philippines'
         })
-        const k = event.target.value
-        const got = this.state.forecast.filter(data => data.key === k)
+
+
+
+        console.log("XXXX", JSON.stringify(k, null, 2))
+        const got = this.state.forecast.filter(data => data.key === k.url)
         if (got.length > 0) {
-            console.log(JSON.stringify(got[0]))
+            //console.log(JSON.stringify(got[0]))
             console.log("\n\ncached data\n")
             this.setState({
                 placeData: got[0].data,
                 loading: false
             })
         } else {
-            Service.getForecast(k).then(data => {
+            Service.getForecast(k.url).then(data => {
                 const fresh = {
-                    key: k,
+                    key: k.url,
                     data: JSON.parse(data)
                 }
                 this.setState({
@@ -64,7 +74,7 @@ class App extends Component {
                     placeData: JSON.parse(data),
                     loading: false
                 })
-                console.log(JSON.stringify(JSON.parse(data)))
+               // console.log(JSON.stringify(JSON.parse(data)))
                 console.log("\n\nfresh data\n")
             })
         }
@@ -143,9 +153,16 @@ class App extends Component {
 
                 {this.state.showRaw && JSON.stringify(this.state.placeData.data)}
 
+                <MapForecast currentLocation={this.state.currentLocation} google={this.props.google}/>
+
             </div>
         );
     }
 }
 
-export default App;
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyBwc3ZG5Qh0r3maIQEfm2t4TRjqRjAT9C8',
+    libraries: ['places']
+})(App)
+
+//export default App;
