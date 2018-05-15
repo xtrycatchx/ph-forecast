@@ -24,7 +24,6 @@ class App extends Component {
             loading: true
         })
         Service.getPlaces().then(data => {
-
             const places = JSON.parse(data).sort((a, b) => {
                 if (a.verbose_name < b.verbose_name) return -1;
                 if (a.verbose_name > b.verbose_name) return 1;
@@ -32,9 +31,10 @@ class App extends Component {
             })
 
             const arrTen = [];
-            for (let k = 0; k < places.length; k++) {
-                arrTen.push(<option key={places[k].url} value={JSON.stringify(places[k])}> {places[k].verbose_name.replace(/_/g, ' ')} </option>);
-            }
+            places.forEach(place => {
+                arrTen.push(<option key={place.url} value={JSON.stringify(place)}> {place.verbose_name.replace(/_/g, ' ')} </option>);
+            })
+
             this.setState({
                 places: arrTen,
                 loading: false
