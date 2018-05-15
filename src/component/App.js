@@ -30,9 +30,8 @@ class App extends Component {
                 return 0;
             })
 
-            const arrTen = [];
-            places.forEach(place => {
-                arrTen.push(<option key={place.url} value={JSON.stringify(place)}> {place.verbose_name.replace(/_/g, ' ')} </option>);
+            const arrTen = places.map(place => {
+                return (<option key={place.url} value={JSON.stringify(place)}> {place.verbose_name.replace(/_/g, ' ')} </option>)
             })
 
             this.setState({
@@ -44,21 +43,14 @@ class App extends Component {
     }
 
     changedPlace(event) {
-
         const k = JSON.parse(event.target.value)
-
         this.setState({
             loading: true,
             currentLocation: k.verbose_name.replace(/_/g, ', ') + ', Philippines'
         })
 
-
-
-        console.log("XXXX", JSON.stringify(k, null, 2))
         const got = this.state.forecast.filter(data => data.key === k.url)
         if (got.length > 0) {
-            //console.log(JSON.stringify(got[0]))
-            console.log("\n\ncached data\n")
             this.setState({
                 placeData: got[0].data,
                 loading: false
@@ -74,8 +66,6 @@ class App extends Component {
                     placeData: JSON.parse(data),
                     loading: false
                 })
-               // console.log(JSON.stringify(JSON.parse(data)))
-                console.log("\n\nfresh data\n")
             })
         }
     }
