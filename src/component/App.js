@@ -78,7 +78,37 @@ class App extends Component {
 
     render() {
         const placeData = this.state.placeData
-        const tables = [];
+
+        let tables = [];
+        if (placeData) {
+            tables = placeData.data.map(data => {
+                const date = data.date
+
+                const temperatures = data.readings.map(data => data.temperature)
+                const sumTemp = temperatures.reduce((a, b) => a + b)
+                const avgTemp = isNaN(sumTemp) ? 'not available' : sumTemp / temperatures.length
+
+                const heatindexes = data.readings.map(data => data.heat_index)
+                const sumHeatIndexes = heatindexes.reduce((a, b) => a + b)
+                const avgHeatIndex = isNaN(sumHeatIndexes) ? 'not available' : sumHeatIndexes / heatindexes.length
+
+                const rainFalls = data.readings.map(data => data.rainfall)
+                const sumRainFalls = rainFalls.reduce((a, b) => a + b)
+                const avgRainFalls = isNaN(sumRainFalls) ? 'not available' : sumRainFalls / rainFalls.length
+
+                return (
+                    <tr key={JSON.stringify(data)} bgcolor='ffffff'>
+                        <td>{date}</td>
+                        <td>{avgTemp}</td>
+                        <td>{avgHeatIndex}</td>
+                        <td>{avgRainFalls}</td>
+                    </tr>
+                )
+            })
+        }
+
+
+        const tablesX = [];
         if (placeData) {
             for (var k = 0; k < placeData.data.length; k++) {
 
@@ -143,7 +173,7 @@ class App extends Component {
 
                 {this.state.showRaw && JSON.stringify(this.state.placeData.data)}
 
-                <MapForecast currentLocation={this.state.currentLocation} google={this.props.google}/>
+                <MapForecast currentLocation={this.state.currentLocation} google={this.props.google} />
 
             </div>
         );
