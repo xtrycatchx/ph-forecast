@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Service from '../logic/service';
 import MapForecast from './MapForecast'
 import { GoogleApiWrapper } from 'google-maps-react'
+import { apikey } from '../map.json'
 
 class App extends Component {
 
@@ -150,6 +151,6 @@ class App extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: '',
+    apiKey: apikey,
     libraries: ['places']
 })(App)
