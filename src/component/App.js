@@ -79,7 +79,7 @@ class App extends Component {
     render() {
         const placeData = this.state.placeData
 
-        let tables = [];
+        let tables;
         if (placeData) {
             tables = placeData.data.map(data => {
                 const date = data.date
@@ -119,7 +119,7 @@ class App extends Component {
                 <br />
 
                 {
-                    tables.length > 0 && (
+                    tables && (
                         <div>
                             <table cellPadding='5' bgcolor='lightgrey'>
                                 <tbody>
