@@ -110,33 +110,6 @@ class App extends Component {
 
         const tablesX = [];
         if (placeData) {
-            for (var k = 0; k < placeData.data.length; k++) {
-
-                const data = placeData.data[k]
-                const date = data.date
-
-                const temperatures = data.readings.map(data => data.temperature)
-                const sumTemp = temperatures.reduce((a, b) => a + b)
-                const avgTemp = isNaN(sumTemp) ? 'not available' : sumTemp / temperatures.length
-
-                const heatindexes = data.readings.map(data => data.heat_index)
-                const sumHeatIndexes = heatindexes.reduce((a, b) => a + b)
-                const avgHeatIndex = isNaN(sumHeatIndexes) ? 'not available' : sumHeatIndexes / heatindexes.length
-
-                const rainFalls = data.readings.map(data => data.rainfall)
-                const sumRainFalls = rainFalls.reduce((a, b) => a + b)
-                const avgRainFalls = isNaN(sumRainFalls) ? 'not available' : sumRainFalls / rainFalls.length
-
-                tables.push(
-                    <tr key={date} bgcolor='ffffff'>
-                        <td>{date}</td>
-                        <td>{avgTemp}</td>
-                        <td>{avgHeatIndex}</td>
-                        <td>{avgRainFalls}</td>
-                    </tr>
-                );
-            }
-
         }
 
         let disabled = this.state.loading ? { 'disabled': 'disabled' } : {};
