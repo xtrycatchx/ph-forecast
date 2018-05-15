@@ -108,11 +108,7 @@ class App extends Component {
         }
 
 
-        const tablesX = [];
-        if (placeData) {
-        }
-
-        let disabled = this.state.loading ? { 'disabled': 'disabled' } : {};
+        const disabled = this.state.loading ? { 'disabled': 'disabled' } : {};
 
         return (
             <div>
